@@ -1,0 +1,25 @@
+<launch>
+
+  <!-- the parameter with name robot_description will load the urdf file. (here the urdf is not using any xacro macros and we can read the file using the cat command) -->	
+  <!-- <param name="robot_description" command="cat '$(find hexbot)/urdf/bot_urdf.xacro'"/> -->
+  <!-- if urdf was using macros, we need to convert it to urdf and the additional command should be added before loading it up -->
+  
+  <param name="robot_description" command="$(find xacro)/xacro '$(find hexbot)/urdf/bot_urdf.xacro'"/> 
+
+  <!-- to define the initial position of the robot -->
+  
+  <arg name="x" default="0"/>
+  <arg name="y" default="0"/>
+  <arg name="z" default="0"/>
+
+  <!-- creating a node called hexbot_spawn to execute the test to spawn the robot in the environment,and it comes from the package called gazebo ros, the securable is called spawn_model, we are gonna see the log of this task of this node in this screen, in the same log of the simulation,
+  as arguments, urdf because robot is written in urdf, as parameter robot_description, we name the model hexbot and using the arguments we defined above we can find the initial position of the bot. -->
+
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model hexbot -x $(arg x) -y $(arg y) -z $(arg z)"/>
+  
+  <!-- use this to kill all gazebo servers :  killall gzserver -->
+  <!-- to see the spawned robot, yu need to open gazebo in another terminal using: rosrun gazebo_ros gazebo -->
+  <!-- install: sudo apt-get install ros-noetic-teleop-twist-keyboard -->
+  <!-- this is to control the bot. it is subscribed to the cmd vel and odom data that gazebo is publishing -->
+
+</launch>
