@@ -17,20 +17,21 @@ def callback(msg):
 
 def go_front(value):
 	msg = Twist()
+	pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 	state_description = "pranav" #for personal info
 	if(value>1.5):
 		rospy.loginfo(state_description)
 		msg.linear.x = 10
 		pub.publish(msg)
-		print("yo")
+		#print("yo")
 	else:
 		msg.linear.x=0
 		pub.publish(msg)
 
 def clbk(msg):
 	rospy.loginfo(msg.data)
-	if(msg.data=="Go_forward"):
-		sub = rospy.Subscriber('/hexbot/laser/scan', LaserScan, callback)
+	#if(msg.data=="Go_forward"):
+		
 		
 
 
@@ -39,8 +40,9 @@ def main():
 	global pub
 	global command
 	rospy.init_node('going_forward')
-	pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
-	sub_command = rospy.Subscriber('/forward_command',String,clbk)
+	
+	#sub_command = rospy.Subscriber('/forward_command',String,clbk)
+	sub = rospy.Subscriber('/hexbot/laser/scan', LaserScan, callback)
 	#time.sleep(5)
 	#if(command==1):
 	
